@@ -18,4 +18,3 @@ tzdata==2022.1
 urllib3==1.26.9
 flask==2.1.2
 webargs==8.1.0
-
