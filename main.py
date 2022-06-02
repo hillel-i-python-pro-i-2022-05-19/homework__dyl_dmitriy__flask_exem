@@ -1,8 +1,4 @@
 from fastapi import FastAPI
-from flask import Flask
-import requests
-
-
 
 app = FastAPI()
 
@@ -14,4 +10,3 @@ async def root():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
-
