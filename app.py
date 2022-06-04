@@ -44,5 +44,32 @@ def users__create(args):
     return "Ok"
 
 
+@app.route('/phones/update/<int:phoneID>')
+@use_args({"phoneValue": fields.Int(required=True)}, location="query")
+def phones__update(args, phoneID):
+    with Connection() as connection:
+        with connection:
+            connection.execute(
+                "UPDATE phones"
+                "SET phoneValue=:phoneValue"
+                "WHERE (phoneID=:phoneID);",
+                {'phoneValue': args['phoneValue'], 'phoneID': phoneID},
+            )
+
+    return "Ok"
+
+
+@app.route('/phones/delete/<int:phoneID>')
+def phones__delete(phoneID):
+    with Connection() as connection:
+        with connection:
+            connection.execute(
+                "DELETE FROM phones WHERE (phoneID=:phoneID);",
+                {"phoneID": phoneID, },
+            )
+
+    return "Ok"
+
+
 if __name__ == '__main__':
     app.run()
