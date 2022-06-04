@@ -25,15 +25,16 @@ class Connection:
 @app.route("/phones/read")
 def phones__read(phone=None, phones=None):
     with Connection() as connection:
-        users = connection.execute("SELECT * FROM phones;").fetchall()
+        phones = connection.execute("SELECT * FROM phones;").fetchall()
 
-    return '<br>'.join([f'{phone["phoneID"]}: {phone["contactName"]} - {phone["phoneValue"]}' for phone in phones])
+    return '<br>'.join([f'{phone["phones_pk"]}: {phone["phoneID"]} - {phone["contactName"]} - {phone["phoneValue"]}'
+                        for phone in phones])
 
 
 @app.route("/phones/create")
 @use_args({"phoneID": fields.Int(required=True), "contactName": fields.Str(required=True), "phoneValue": fields.Int(
     required=True)}, location="query")
-def users__create(args):
+def phones__create(args):
     with Connection() as connection:
         with connection:
             connection.execute(
@@ -44,28 +45,28 @@ def users__create(args):
     return "Ok"
 
 
-@app.route('/phones/update/<int:phoneID>')
+@app.route('/phones/update/<int:phones_pk>')
 @use_args({"phoneValue": fields.Int(required=True)}, location="query")
-def phones__update(args, phoneID):
+def phones__update(args, phones_pk):
     with Connection() as connection:
         with connection:
             connection.execute(
                 "UPDATE phones"
                 "SET phoneValue=:phoneValue"
-                "WHERE (phoneID=:phoneID);",
-                {'phoneValue': args['phoneValue'], 'phoneID': phoneID},
+                "WHERE (phones_pk=:phones_pk);",
+                {'phoneValue': args['phoneValue'], 'phones_pk': phones_pk},
             )
 
     return "Ok"
 
 
-@app.route('/phones/delete/<int:phoneID>')
-def phones__delete(phoneID):
+@app.route('/phones/delete/<int:phones_pk>')
+def phones__delete(phones_pk):
     with Connection() as connection:
         with connection:
             connection.execute(
-                "DELETE FROM phones WHERE (phoneID=:phoneID);",
-                {"phoneID": phoneID, },
+                "DELETE FROM phones WHERE (phones_pk=:phones_pk);",
+                {"phones_pk": phones_pk, },
             )
 
     return "Ok"
