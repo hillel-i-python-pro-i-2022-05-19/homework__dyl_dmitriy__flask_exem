@@ -22,7 +22,7 @@ class Connection:
         self._connection.close()
 
 
-@app.route("/phones/read")
+@app.route("/phones/read-all")
 def phones__read(phone=None, phones=None):
     with Connection() as connection:
         phones = connection.execute("SELECT * FROM phones;").fetchall()
